@@ -1,0 +1,9 @@
+
+<resources>
+    <string name="app_name">MoviesDB</string>
+    <string name="loading">Loading</string>
+    <string name="language">Release date: %s</string>
+    <string name="search_hint">The MovieDB</string>
+    <string name="no_results">No results %s</string>
+    <string name="unknown">\?</string>
+</resources>
