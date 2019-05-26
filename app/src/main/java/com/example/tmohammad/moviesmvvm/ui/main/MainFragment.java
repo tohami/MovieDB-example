@@ -117,7 +117,13 @@ public class MainFragment extends Fragment {
     private void initAutoCompleteAdapter() {
         //init autocomplete Text adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (binding.searchMovie.getContext(), android.R.layout.simple_spinner_dropdown_item);
+                (binding.searchMovie.getContext(), android.R.layout.simple_spinner_dropdown_item){
+            //limit the suggistion count to 10 items
+            @Override
+            public int getCount() {
+                return super.getCount() > 10 ? 10 : super.getCount() ;
+            }
+        };
 
         binding.searchMovie.setThreshold(1); //will start working from first character
         binding.searchMovie.setAdapter(adapter);
