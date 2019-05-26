@@ -1,5 +1,6 @@
 package com.example.tmohammad.moviesmvvm.ui.main;
 
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,12 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.tmohammad.moviesmvvm.R;
 import com.example.tmohammad.moviesmvvm.databinding.MainFragmentBinding;
 import com.example.tmohammad.moviesmvvm.di.Injection;
+import com.example.tmohammad.moviesmvvm.model.RecentSearch;
 import com.example.tmohammad.moviesmvvm.ui.adapter.MoviesAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainFragment extends Fragment {
 
@@ -28,7 +35,7 @@ public class MainFragment extends Fragment {
     //Bundle constant to save the last searched query
     private static final String LAST_SEARCH_QUERY = "last_search_query";
     //The default query to load
-    private static final String DEFAULT_QUERY = "The Terminator";
+    private static final String DEFAULT_QUERY = "now you see me";
     private MainViewModel mViewModel;
     private MainFragmentBinding binding;
     private MoviesAdapter mMoviesAdapter;
@@ -68,11 +75,69 @@ public class MainFragment extends Fragment {
             query = savedInstanceState.getString(LAST_SEARCH_QUERY, DEFAULT_QUERY);
         }
 
-        //Post the query to be searched
-        mViewModel.searchMovies(query);
+        //Post the query to be searched if it not empty
+        if(!query.isEmpty())
+            mViewModel.searchMovies(query);
 
         //Initialize the EditText for Search Actions
-        initSearch(query);
+        initAutoCompleteTextView(query);
+    }
+
+    /**
+     * Initializes the EditText for handling the Search actions
+     *
+     * @param query The query to be searched for in the moviesitories
+     */
+    private void initAutoCompleteTextView(String query) {
+        binding.searchMovie.setText(query);
+
+        binding.searchMovie.setOnEditorActionListener((view, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                String inputText = binding.searchMovie.getText().toString().trim();
+                updatemovieListFromInput(inputText);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        binding.searchMovie.setOnKeyListener((view, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                String inputText = binding.searchMovie.getText().toString().trim();
+                updatemovieListFromInput(inputText);
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        initAutoCompleteAdapter();
+    }
+
+    private void initAutoCompleteAdapter() {
+        //init autocomplete Text adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (binding.searchMovie.getContext(), android.R.layout.simple_spinner_dropdown_item);
+
+        binding.searchMovie.setThreshold(1); //will start working from first character
+        binding.searchMovie.setAdapter(adapter);
+
+        binding.searchMovie.setOnItemClickListener((adapterView, view, position, id) -> {
+            mViewModel.searchMovies(adapter.getItem(position));
+        });
+
+        mViewModel.getRecentSearch().observe(this , recentSearches -> {
+            List<String> recentSearch = new ArrayList<>() ;
+            if (recentSearches != null) {
+                for(RecentSearch search : recentSearches){
+                    recentSearch.add(search.getKeyword()) ;
+                }
+            }
+            adapter.clear();
+            adapter.addAll(recentSearch);
+//            adapter.notifyDataSetChanged();
+        });
+        binding.searchMovie.dismissDropDown();
     }
 
     /**
@@ -125,42 +190,14 @@ public class MainFragment extends Fragment {
     }
 
     /**
-     * Initializes the EditText for handling the Search actions
-     *
-     * @param query The query to be searched for in the moviesitories
-     */
-    private void initSearch(String query) {
-        binding.searchMovie.setText(query);
-
-        binding.searchMovie.setOnEditorActionListener((view, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_GO) {
-                updatemovieListFromInput();
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-        binding.searchMovie.setOnKeyListener((view, keyCode, event) -> {
-            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                updatemovieListFromInput();
-                return true;
-            } else {
-                return false;
-            }
-        });
-    }
-
-    /**
      * Updates the list with the new data when the User entered the query and hit 'enter'
      * or corresponding action to trigger the Search.
      */
-    private void updatemovieListFromInput() {
-        String queryEntered = binding.searchMovie.getText().toString().trim();
-        if (!TextUtils.isEmpty(queryEntered)) {
+    private void updatemovieListFromInput(String inputText) {
+        if (!TextUtils.isEmpty(inputText)) {
             binding.list.scrollToPosition(0);
             //Posts the query to be searched
-            mViewModel.searchMovies(queryEntered);
+            mViewModel.searchMovies(inputText);
             //Resets the old list
             mMoviesAdapter.submitList(null);
         }

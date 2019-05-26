@@ -74,9 +74,6 @@ public class MoviesAdapter extends PagedListAdapter<Movie, MoviesAdapter.movieVi
                 Resources resources = mDataBinding.getRoot().getContext().getResources();
                 mDataBinding.movieName.setText(resources.getString(R.string.loading));
                 mDataBinding.movieDescription.setVisibility(View.GONE);
-                mDataBinding.movieLanguage.setVisibility(View.GONE);
-                mDataBinding.movieStars.setText(resources.getString(R.string.unknown));
-                mDataBinding.movieForks.setText(resources.getString(R.string.unknown));
             } else {
                 //When movie is not null, data binding will be automatically done in the layout
                 mDataBinding.setMovie(movie);

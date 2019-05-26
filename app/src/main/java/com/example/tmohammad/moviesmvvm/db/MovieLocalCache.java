@@ -1,10 +1,13 @@
 package com.example.tmohammad.moviesmvvm.db;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.paging.DataSource;
 import android.util.Log;
 
 import com.example.tmohammad.moviesmvvm.model.Movie;
+import com.example.tmohammad.moviesmvvm.model.RecentSearch;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -25,10 +28,10 @@ public class MovieLocalCache {
     /**
      * Insert a list of movies in the database, on a background thread.
      */
-    public void insert(List<Movie> movies, InsertCallback callback) {
+    public void insertMovies(List<Movie> movies, InsertCallback callback) {
         ioExecutor.execute(() -> {
             Log.d(LOG_TAG, "insert: inserting " + movies.size() + " movies");
-            movieDAO.insert(movies);
+            movieDAO.insertMovies(movies);
             callback.insertFinished();
         });
     }
@@ -41,8 +44,33 @@ public class MovieLocalCache {
      * @param name moviesitory name
      */
     public DataSource.Factory<Integer, Movie> moviesByName(String name) {
+        //insert name into recent search
+        RecentSearch search = new RecentSearch() ;
+        search.setKeyword(name);
+        search.setTime(Calendar.getInstance().getTimeInMillis());
+        insertResentSearch(search , () -> {});
         // appending '%' so we can allow other characters to be before and after the query string
         return movieDAO.moviesByName("%" + name.replace(' ', '%') + "%");
+    }
+
+
+    /**
+     * Request a liveData of recentSearch
+     */
+    public LiveData<List<RecentSearch>> queryRecentSearch() {
+        // appending '%' so we can allow other characters to be before and after the query string
+        return movieDAO.getRecentSearch();
+    }
+
+    /**
+     * Insert a recent search in the database, on a background thread.
+     */
+    public void insertResentSearch(RecentSearch query, InsertCallback callback) {
+        ioExecutor.execute(() -> {
+            Log.d(LOG_TAG, "insert: inserting " + query + " recent_search");
+            movieDAO.insertRecentSearch(query);
+            callback.insertFinished();
+        });
     }
 
     public interface InsertCallback {

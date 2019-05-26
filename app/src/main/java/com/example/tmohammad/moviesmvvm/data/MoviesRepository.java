@@ -10,6 +10,9 @@ import com.example.tmohammad.moviesmvvm.api.MovieService;
 import com.example.tmohammad.moviesmvvm.db.MovieLocalCache;
 import com.example.tmohammad.moviesmvvm.model.Movie;
 import com.example.tmohammad.moviesmvvm.model.MoviesSearchResult;
+import com.example.tmohammad.moviesmvvm.model.RecentSearch;
+
+import java.util.List;
 
 public class MoviesRepository {
     //Constant used for logs
@@ -25,7 +28,7 @@ public class MoviesRepository {
     }
 
     /**
-     * Search moviesitories whose names match the query.
+     * Search movies whose names match the query.
      */
     public MoviesSearchResult search(String query) {
         Log.d(LOG_TAG, "search: New query: " + query);
@@ -51,4 +54,10 @@ public class MoviesRepository {
         return new MoviesSearchResult(data, networkErrors);
     }
 
+    /**
+     * get all recent search.
+     */
+    public LiveData<List<RecentSearch>> getRecentSearch() {
+        return localCache.queryRecentSearch() ;
+    }
 }

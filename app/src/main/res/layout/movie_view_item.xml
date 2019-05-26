@@ -12,110 +12,83 @@
             type="com.example.tmohammad.moviesmvvm.model.Movie" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/row_item_margin_horizontal"
-        android:paddingTop="@dimen/row_item_margin_vertical"
-        tools:ignore="UnusedAttribute">
-
-        <ImageView
+        app:cardCornerRadius="18dp"
+        android:layout_margin="8dp"
+        android:elevation="8dp">
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="164dp"
-            android:id="@+id/iv_bannar"
-            android:scaleType="centerCrop"
-            android:src="@color/colorPrimary"
-            app:imageUrl="@{movie.backdropPath}"
-            app:error="@{@drawable/ic_rate}"
-            />
-
-        <TextView
-            android:id="@+id/movie_name"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#77000000"
-            android:padding="5dp"
-            android:text="@{movie.title}"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/movie_name_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/iv_bannar"
-            tools:text="The Terminator" />
+            tools:ignore="UnusedAttribute">
 
-        <TextView
-            android:id="@+id/movie_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="10"
-            android:paddingVertical="@dimen/row_item_margin_vertical"
-            android:text="@{movie.overview}"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="@dimen/movie_description_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_name"
-            tools:ignore="UnusedAttribute"
-            tools:text="In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the Terminator back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="164dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/iv_bannar"
+                android:scaleType="centerCrop"
+                android:src="@color/colorPrimary"
+                app:imageUrl="@{movie.backdropPath}"
+                app:error="@{@drawable/ic_rate}"
+                />
 
-        <TextView
-            android:id="@+id/movie_language"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:paddingVertical="@dimen/row_item_margin_vertical"
-            android:text="@{@string/language(movie.releaseDate)}"
-            android:textSize="@dimen/movie_description_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_description"
-            tools:ignore="RtlCompat" />
+            <TextView
+                android:id="@+id/movie_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#77000000"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:text="@{movie.title}"
+                android:layout_marginHorizontal="8dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/movie_name_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/iv_bannar"
+                tools:text="The Terminator" />
 
-        <ImageView
-            android:id="@+id/star"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/row_item_margin_vertical"
-            android:src="@drawable/ic_star"
-            android:tint="@android:color/holo_orange_light"
-            app:layout_constraintBottom_toBottomOf="@+id/movie_stars"
-            app:layout_constraintEnd_toStartOf="@+id/movie_stars"
-            app:layout_constraintTop_toTopOf="@+id/movie_stars" />
+            <android.support.v7.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/movie_rate"
+                android:numStars="5"
+                android:progressTint="@color/colorPrimary"
+                android:rating="@{movie.voteAverage}"
+                style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
 
-        <TextView
-            android:id="@+id/movie_stars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{String.valueOf(movie.voteCount)}"
-            android:textSize="@dimen/movie_description_size"
-            tools:text="30"
-            app:layout_constraintBaseline_toBaselineOf="@+id/movie_forks"
-            app:layout_constraintEnd_toStartOf="@id/forks"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:paddingVertical="@dimen/row_item_margin_vertical" />
+                app:layout_constraintStart_toStartOf="@id/movie_name"
+                app:layout_constraintEnd_toEndOf="@id/movie_name"
+                app:layout_constraintTop_toBottomOf="@id/movie_name"
+                />
+            <TextView
+                android:id="@+id/movie_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:paddingVertical="@dimen/row_item_margin_vertical"
+                android:text="@{movie.overview}"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/movie_description_size"
+                app:layout_constraintEnd_toEndOf="@id/movie_name"
+                app:layout_constraintStart_toStartOf="@id/movie_name"
+                app:layout_constraintTop_toBottomOf="@+id/movie_rate"
+                tools:ignore="UnusedAttribute"
+                tools:text="In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the Terminator back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?" />
 
-        <ImageView
-            android:id="@+id/forks"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/row_item_margin_vertical"
-            android:src="@drawable/ic_rate"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/movie_forks"
-            app:layout_constraintEnd_toStartOf="@+id/movie_forks"
-            app:layout_constraintTop_toTopOf="@+id/movie_forks" />
-
-        <TextView
-            android:id="@+id/movie_forks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/row_item_margin_vertical"
-            android:text="@{String.valueOf(movie.voteAverage)}"
-            android:textSize="@dimen/movie_description_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_description"
-            tools:text="30" />
-    </android.support.constraint.ConstraintLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Read More"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:background="@drawable/readmore_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_description"/>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
 </layout>

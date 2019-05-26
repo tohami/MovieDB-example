@@ -88,7 +88,7 @@ public class MovieBoundaryCallback extends PagedList.BoundaryCallback<Movie> imp
     @Override
     public void onSuccess(List<Movie> items) {
         //Inserting records in the database thread
-        localCache.insert(items, () -> {
+        localCache.insertMovies(items, () -> {
             //Updating the last requested page number when the request was successful
             //and the results were inserted successfully
             lastRequestedPage++;

@@ -9,6 +9,9 @@ import android.arch.paging.PagedList;
 import com.example.tmohammad.moviesmvvm.data.MoviesRepository;
 import com.example.tmohammad.moviesmvvm.model.Movie;
 import com.example.tmohammad.moviesmvvm.model.MoviesSearchResult;
+import com.example.tmohammad.moviesmvvm.model.RecentSearch;
+
+import java.util.List;
 
 public class MainViewModel extends ViewModel {
     private MoviesRepository moviemoviesitory;
@@ -34,6 +37,10 @@ public class MainViewModel extends ViewModel {
         return movies;
     }
 
+    public LiveData<List<RecentSearch>> getRecentSearch() {
+        return this.moviemoviesitory.getRecentSearch();
+    }
+
     public LiveData<String> getNetworkErrors() {
         return networkErrors;
     }
@@ -45,12 +52,6 @@ public class MainViewModel extends ViewModel {
         queryLiveData.postValue(queryString);
     }
 
-    /**
-     * Get the last query value.
-     */
-//    @Nullable
-//    String lastQueryValue() {
-//        return queryLiveData.getValue();
-//    }
+
 
 }

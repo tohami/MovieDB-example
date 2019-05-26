@@ -6,8 +6,9 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.example.tmohammad.moviesmvvm.model.Movie;
+import com.example.tmohammad.moviesmvvm.model.RecentSearch;
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class , RecentSearch.class}, version = 1, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
 
     private static volatile MovieDatabase INSTANCE;
