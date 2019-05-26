@@ -33,6 +33,7 @@ ext {
     pagingVersion = "1.0.1"
     retrofitVersion = "2.4.0"
     okhttpLoggingInterceptorVersion = "3.10.0"
+    nav_version = "1.0.0"
 }
 
 task clean(type: Delete) {
