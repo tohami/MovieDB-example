@@ -1,13 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.details.DetailsFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="movie"
+            type="com.example.tmohammad.moviesmvvm.model.Movie" />
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UnusedAttribute">
 
-</FrameLayout>
+            <ImageView
+                android:id="@+id/iv_backDrop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/aladinbd"
+                android:adjustViewBounds="true"
+                app:error="@{@drawable/ic_rate}"
+                app:imageUrl="@{movie.backdropPath}"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_poster"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:background="@android:color/white"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="128dp"
+                android:src="@drawable/aladin"
+                app:error="@{@drawable/ic_rate}"
+                app:imageUrl="@{movie.posterPath}"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent=".4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_backDrop"
+
+                />
+            <TextView
+                android:id="@+id/movie_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:background="#77000000"
+                android:padding="5dp"
+                android:text="@{movie.title}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/movie_name_size"
+                app:layout_constraintTop_toBottomOf="@id/iv_poster"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="The Terminator" />
+
+
+            <TextView
+                android:id="@+id/movie_rate_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_name"
+                android:text="Movie Rate"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/movie_rate"
+                style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:progressTint="@color/colorPrimary"
+                android:rating="@{movie.voteAverage}"
+                android:layout_margin="8dp"
+                app:layout_constraintStart_toEndOf="@id/movie_rate_tv"
+                app:layout_constraintTop_toTopOf="@id/movie_rate_tv"
+                app:layout_constraintBottom_toBottomOf="@id/movie_rate_tv" />
+
+            <TextView
+                android:id="@+id/movie_adult_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_rate_tv"
+                android:text="Adult : "
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/movie_adult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{movie.adult.toString()}"
+                android:textSize="@dimen/movie_info_size"
+                app:layout_constraintStart_toStartOf="@id/movie_rate"
+                app:layout_constraintTop_toTopOf="@id/movie_adult_tv"
+                app:layout_constraintBottom_toBottomOf="@id/movie_adult_tv" />
+
+            <TextView
+                android:id="@+id/release_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_adult_tv"
+                android:text="Release  "
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{movie.releaseDate}"
+                android:textSize="@dimen/movie_info_size"
+                app:layout_constraintStart_toStartOf="@id/movie_rate"
+                app:layout_constraintTop_toTopOf="@id/release_date_tv"
+                app:layout_constraintBottom_toBottomOf="@id/release_date_tv" />
+
+            <TextView
+                android:id="@+id/popularity_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/release_date_tv"
+                android:text="Popularity"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/popularity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{movie.popularity.toString()}"
+                android:textSize="@dimen/movie_info_size"
+                app:layout_constraintStart_toStartOf="@id/movie_rate"
+                app:layout_constraintTop_toTopOf="@id/popularity_tv"
+                app:layout_constraintBottom_toBottomOf="@id/popularity_tv" />
+
+
+
+            <TextView
+                android:id="@+id/vote_count_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/popularity_tv"
+                android:text="Vote Count"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/vote_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{movie.voteCount.toString()}"
+                android:textSize="@dimen/movie_info_size"
+                app:layout_constraintStart_toStartOf="@id/movie_rate"
+                app:layout_constraintTop_toTopOf="@id/vote_count_tv"
+                app:layout_constraintBottom_toBottomOf="@id/vote_count_tv" />
+
+            <TextView
+                android:id="@+id/vote_average_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vote_count_tv"
+                android:text="Avarage"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/vote_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                app:layout_constraintStart_toStartOf="@id/movie_rate"
+                app:layout_constraintTop_toTopOf="@id/vote_average_tv"
+                app:layout_constraintBottom_toBottomOf="@id/vote_average_tv" />
+
+            <TextView
+                android:id="@+id/original_language_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vote_average"
+                android:text="Language"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/original_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@{movie.originalLanguage}"
+                android:textSize="@dimen/movie_info_size"
+                app:layout_constraintStart_toStartOf="@id/movie_rate"
+                app:layout_constraintTop_toTopOf="@id/original_language_tv"
+                app:layout_constraintBottom_toBottomOf="@id/original_language_tv" />
+
+            <TextView
+                android:id="@+id/overview_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/original_language_tv"
+                android:text="Overview"
+                android:layout_margin="8dp"
+                android:textSize="@dimen/movie_info_size"
+                />
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:visibility="visible"
+                android:paddingVertical="@dimen/row_item_margin_vertical"
+                android:text="@{movie.overview}"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/movie_description_size"
+                app:layout_constraintEnd_toEndOf="@id/movie_name"
+                app:layout_constraintStart_toStartOf="@id/movie_name"
+                app:layout_constraintTop_toBottomOf="@+id/overview_tv"
+                tools:ignore="UnusedAttribute"
+                tools:text="In the post-apocalyptic future, reigning tyrannical supercomputers teleport a cyborg assassin known as the Terminator back to 1984 to kill Sarah Connor, whose unborn son is destined to lead insurgents against 21st century mechanical hegemony. Meanwhile, the human-resistance movement dispatches a lone warrior to safeguard Sarah. Can he stop the virtually indestructible killing machine?" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>

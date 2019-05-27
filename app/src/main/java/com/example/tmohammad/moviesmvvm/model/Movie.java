@@ -25,9 +25,7 @@ public class Movie {
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
-    //    @SerializedName("genre_ids")
-//    @Expose
-//    private List<Integer> genreIds;
+
     @SerializedName("original_title")
     @Expose
     private String originalTitle;

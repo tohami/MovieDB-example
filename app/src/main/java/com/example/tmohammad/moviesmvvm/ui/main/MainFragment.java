@@ -28,6 +28,8 @@ import com.example.tmohammad.moviesmvvm.ui.adapter.MoviesAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.navigation.Navigation;
+
 public class MainFragment extends Fragment {
 
     //Constant used for Logs
@@ -162,7 +164,10 @@ public class MainFragment extends Fragment {
      * Initializes the Adapter of RecyclerView which is {@link MoviesAdapter}
      */
     private void initAdapter() {
-        mMoviesAdapter = new MoviesAdapter();
+        mMoviesAdapter = new MoviesAdapter(movie -> {
+            mViewModel.setSelectedMovie(movie);
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_mainFragment_to_detailsFragment);
+        });
         binding.list.setAdapter(mMoviesAdapter);
 
         //Subscribing to receive the new PagedList movies

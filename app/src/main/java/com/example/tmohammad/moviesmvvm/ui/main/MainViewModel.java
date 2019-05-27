@@ -28,6 +28,7 @@ public class MainViewModel extends ViewModel {
     private LiveData<String> networkErrors = Transformations.switchMap(movieResult,
             MoviesSearchResult::getNetworkErrors
     );
+    private Movie selectedMovie;
 
     public MainViewModel(MoviesRepository moviemoviesitory) {
         this.moviemoviesitory = moviemoviesitory;
@@ -53,5 +54,7 @@ public class MainViewModel extends ViewModel {
     }
 
 
-
+    public void setSelectedMovie(Movie movie) {
+        this.selectedMovie = movie ;
+    }
 }

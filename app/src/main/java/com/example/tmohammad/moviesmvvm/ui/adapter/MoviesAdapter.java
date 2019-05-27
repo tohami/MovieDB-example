@@ -15,10 +15,12 @@ import com.example.tmohammad.moviesmvvm.R;
 import com.example.tmohammad.moviesmvvm.databinding.MovieViewItemBinding;
 import com.example.tmohammad.moviesmvvm.model.Movie;
 
+import androidx.navigation.Navigation;
+
 /*
  * Adapter for the list of moviesitories.
  */
-public class MoviesAdapter extends PagedListAdapter<Movie, MoviesAdapter.movieViewHolder> {
+public class MoviesAdapter extends PagedListAdapter<Movie, MoviesAdapter.MovieViewHolder> {
 
     /**
      * DiffUtil to compare the movie data (old and new)
@@ -36,31 +38,33 @@ public class MoviesAdapter extends PagedListAdapter<Movie, MoviesAdapter.movieVi
             return oldItem.equals(newItem);
         }
     };
+    private final OnListItemSelectedListener onItemSelectedListener;
 
-    public MoviesAdapter() {
+    public MoviesAdapter(OnListItemSelectedListener onItemSelectedListener) {
         super(MOVIE_COMPARATOR);
+        this.onItemSelectedListener = onItemSelectedListener ;
     }
 
     @NonNull
     @Override
-    public movieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //Uses DataBinding to inflate the Item View
         MovieViewItemBinding itemBinding = MovieViewItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new movieViewHolder(itemBinding);
+        return new MovieViewHolder(itemBinding);
     }
-
+    
     @Override
-    public void onBindViewHolder(@NonNull movieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         holder.bind(getItem(position));
     }
 
     /**
      * View Holder for a {@link Movie} RecyclerView list item.
      */
-    public class movieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final MovieViewItemBinding mDataBinding;
 
-        movieViewHolder(MovieViewItemBinding itemBinding) {
+        MovieViewHolder(MovieViewItemBinding itemBinding) {
             super(itemBinding.getRoot());
             this.mDataBinding = itemBinding;
 
@@ -89,12 +93,16 @@ public class MoviesAdapter extends PagedListAdapter<Movie, MoviesAdapter.movieVi
          */
         @Override
         public void onClick(View view) {
-            if (getAdapterPosition() > RecyclerView.NO_POSITION) {
+            if (getAdapterPosition() > RecyclerView.NO_POSITION && onItemSelectedListener != null) {
                 Movie movie = getItem(getAdapterPosition());
-                if (movie != null && !TextUtils.isEmpty(movie.getTitle())) {
-                    Toast.makeText(view.getContext() , String.format("%s clicked", movie.getTitle()), Toast.LENGTH_SHORT).show();
+                if (movie != null) {
+                    onItemSelectedListener.onListItemSelected(movie);
                 }
             }
         }
+    }
+
+    public interface OnListItemSelectedListener {
+        void onListItemSelected(Movie movie) ;
     }
 }
