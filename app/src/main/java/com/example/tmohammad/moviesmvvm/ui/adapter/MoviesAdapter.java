@@ -5,17 +5,15 @@ import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.tmohammad.moviesmvvm.R;
 import com.example.tmohammad.moviesmvvm.databinding.MovieViewItemBinding;
 import com.example.tmohammad.moviesmvvm.model.Movie;
 
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.FragmentNavigator;
 
 /*
  * Adapter for the list of moviesitories.
@@ -96,13 +94,17 @@ public class MoviesAdapter extends PagedListAdapter<Movie, MoviesAdapter.MovieVi
             if (getAdapterPosition() > RecyclerView.NO_POSITION && onItemSelectedListener != null) {
                 Movie movie = getItem(getAdapterPosition());
                 if (movie != null) {
-                    onItemSelectedListener.onListItemSelected(movie);
+
+                    FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                            .addSharedElement(mDataBinding.ivPoster, "poster")
+                            .build();
+                    onItemSelectedListener.onListItemSelected(movie , extras);
                 }
             }
         }
     }
 
     public interface OnListItemSelectedListener {
-        void onListItemSelected(Movie movie) ;
+        void onListItemSelected(Movie movie, FragmentNavigator.Extras extras) ;
     }
 }

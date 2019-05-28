@@ -38,23 +38,30 @@ public class MainViewModel extends ViewModel {
         return movies;
     }
 
-    public LiveData<List<RecentSearch>> getRecentSearch() {
+    LiveData<List<RecentSearch>> getRecentSearch() {
         return this.moviemoviesitory.getRecentSearch();
     }
 
-    public LiveData<String> getNetworkErrors() {
+    LiveData<String> getNetworkErrors() {
         return networkErrors;
     }
 
     /**
      * Search a moviesitory based on a query string.
      */
-    public void searchMovies(String queryString) {
+    void searchMovies(String queryString) {
         queryLiveData.postValue(queryString);
     }
 
+    String getLastSearchQuery() {
+        return queryLiveData.getValue() ;
+    }
 
-    public void setSelectedMovie(Movie movie) {
+    void setSelectedMovie(Movie movie) {
         this.selectedMovie = movie ;
+    }
+
+    public Movie getSelectedMovie() {
+        return selectedMovie;
     }
 }

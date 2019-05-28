@@ -159,6 +159,10 @@ public class Movie {
         return voteAverage;
     }
 
+    public String getVoteAvarageAsString(){
+        return getVoteAverage() + " out of 10" ;
+    }
+
     public void setVoteAverage(float voteAverage) {
         this.voteAverage = voteAverage;
     }

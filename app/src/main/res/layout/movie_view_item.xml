@@ -25,13 +25,15 @@
             tools:ignore="UnusedAttribute">
 
             <ImageView
-                android:id="@+id/iv_bannar"
+                android:id="@+id/iv_poster"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                app:layout_constraintDimensionRatio="0.666"
+                android:layout_height="0dp"
                 android:adjustViewBounds="true"
                 android:background="@color/greyAlpha"
                 app:error="@{@drawable/no_img}"
                 app:imageUrl="@{movie.posterPath}"
+                android:transitionName="poster"
                 app:layout_constraintEnd_toStartOf="@id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +53,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/movie_name_size"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_bannar"
+                app:layout_constraintStart_toEndOf="@id/iv_poster"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="The Terminator" />
 

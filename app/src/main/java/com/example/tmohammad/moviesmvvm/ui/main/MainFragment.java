@@ -1,6 +1,5 @@
 package com.example.tmohammad.moviesmvvm.ui.main;
 
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -37,15 +35,10 @@ public class MainFragment extends Fragment {
     //Bundle constant to save the last searched query
     private static final String LAST_SEARCH_QUERY = "last_search_query";
     //The default query to load
-    private static final String DEFAULT_QUERY = "now you see me";
     private MainViewModel mViewModel;
     private MainFragmentBinding binding;
     private MoviesAdapter mMoviesAdapter;
 
-
-    public static MainFragment newInstance() {
-        return new MainFragment();
-    }
 
     @Nullable
     @Override
@@ -65,24 +58,30 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //Get the view model
-        mViewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(getContext()))
+        mViewModel = ViewModelProviders.of(getActivity(), Injection.provideViewModelFactory(getContext()))
                 .get(MainViewModel.class);
 
         //Initialize RecyclerView
         initRecyclerView();
 
         //Get the query to search
-        String query = DEFAULT_QUERY;
+        String query = "";
         if (savedInstanceState != null) {
-            query = savedInstanceState.getString(LAST_SEARCH_QUERY, DEFAULT_QUERY);
+            query = savedInstanceState.getString(LAST_SEARCH_QUERY, "");
+            if(!query.isEmpty()){
+                //Post the query to be searched if it not empty
+                mViewModel.searchMovies(query);
+            }
         }
-
-        //Post the query to be searched if it not empty
-        if(!query.isEmpty())
-            mViewModel.searchMovies(query);
 
         //Initialize the EditText for Search Actions
         initAutoCompleteTextView(query);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(LAST_SEARCH_QUERY , mViewModel.getLastSearchQuery());
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -96,7 +95,7 @@ public class MainFragment extends Fragment {
         binding.searchMovie.setOnEditorActionListener((view, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 String inputText = binding.searchMovie.getText().toString().trim();
-                updatemovieListFromInput(inputText);
+                updateMovieListFromInput(inputText);
                 return true;
             } else {
                 return false;
@@ -106,7 +105,7 @@ public class MainFragment extends Fragment {
         binding.searchMovie.setOnKeyListener((view, keyCode, event) -> {
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 String inputText = binding.searchMovie.getText().toString().trim();
-                updatemovieListFromInput(inputText);
+                updateMovieListFromInput(inputText);
                 return true;
             } else {
                 return false;
@@ -164,9 +163,11 @@ public class MainFragment extends Fragment {
      * Initializes the Adapter of RecyclerView which is {@link MoviesAdapter}
      */
     private void initAdapter() {
-        mMoviesAdapter = new MoviesAdapter(movie -> {
+        mMoviesAdapter = new MoviesAdapter((movie, extras) -> {
             mViewModel.setSelectedMovie(movie);
-            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_mainFragment_to_detailsFragment);
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(R.id.action_mainFragment_to_detailsFragment
+                    ,null , null , extras);
         });
         binding.list.setAdapter(mMoviesAdapter);
 
@@ -204,7 +205,7 @@ public class MainFragment extends Fragment {
      * Updates the list with the new data when the User entered the query and hit 'enter'
      * or corresponding action to trigger the Search.
      */
-    private void updatemovieListFromInput(String inputText) {
+    private void updateMovieListFromInput(String inputText) {
         if (!TextUtils.isEmpty(inputText)) {
             binding.list.scrollToPosition(0);
             //Posts the query to be searched
