@@ -2,7 +2,7 @@
 <resources>
     <dimen name="row_item_margin_vertical">12dp</dimen>
     <dimen name="row_item_margin_horizontal">12dp</dimen>
-    <dimen name="movie_name_size">24sp</dimen>
+    <dimen name="movie_name_size">20sp</dimen>
     <dimen name="movie_description_size">16sp</dimen>
     <dimen name="movie_info_size">20sp</dimen>
     <dimen name="movie_icon_size">24dp</dimen>

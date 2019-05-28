@@ -6,4 +6,6 @@
     <string name="search_hint">The MovieDB</string>
     <string name="no_results">No results %s</string>
     <string name="unknown">\?</string>
+    <string name="read_more">Read more</string>
+    <string name="search_movie">Search movie</string>
 </resources>
